@@ -1,0 +1,49 @@
+<apex:page showHeader="false" controller="ProdBuyclass">
+    <apex:slds />
+    <apex:form >
+        <div class="slds-scope">
+            <div class="slds-grid slds-wrap slds-text-heading_large
+                        slds-p-around_large slds-border_bottom slds-theme_shade">
+                <div class="slds-col slds-size_1-of-2 slds-align_absolute-center">
+                    <span>Contact Information</span>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-align_absolute-center">
+                    <span>Product Information</span>
+                </div>
+            </div>
+            <apex:pageBlock id="thePageBlock" mode="edit">
+                <apex:pageBlockTable value="{!ptbList}" var="pt1">
+                    <apex:column styleClass="slds-text-align_center">
+                        <apex:pageBlockSection columns="1" id="contact">
+                            <apex:inputField value="{!contsField.Email}"/>
+                            <apex:inputField value="{!contsField.FirstName}"/>
+                            <apex:inputField value="{!contsField.LastName}"/>
+                        </apex:pageBlockSection>
+                    </apex:column>
+                    <apex:column >
+                        <apex:pageBlockSection columns="1" id="buyitem"> 
+                            <apex:outputField value="{!pt1.Name}"/>
+                            <apex:outputField value="{!pt1.Unit_Price__c}" label="Cost"/>
+                            <apex:inputText label="Unit Count" value="{!unitCount}">
+                                <apex:param name="unit" value="{!unitCount}" assignTo="{!unitCount}"/>
+                                <apex:actionSupport event="onchange" reRender="count" action="{!updateUnitCount}">
+                                </apex:actionSupport>
+                            </apex:inputText>
+                            <apex:outputText label="Total Amount" id="count" value="${!totalAmount}" />
+                        </apex:pageBlockSection>
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            <div class="slds-col slds-size_1-of-1 slds-align_absolute-center slds-theme_shade
+                        slds-border_top slds-border_bottom slds-p-around_medium">
+                <span><ul class="slds-button-group-row">
+                    <li class="slds-button-group-item"><apex:commandButton action="{!redirectToTitle}" value="To Shopping" immediate="true"/></li>
+                    <li class="slds-button-group-item">&nbsp;&nbsp;
+                        <apex:commandButton styleClass="slds-button slds-button_brand" action="{!buyItem}" value="Buy" reRender="showmsg,buyitem,contact"/>
+                    </li>
+                    </ul></span>
+            </div>
+            <div class="slds-align_absolute-center"><apex:pageMessages id="showmsg" /></div>
+        </div>
+    </apex:form>
+</apex:page>
