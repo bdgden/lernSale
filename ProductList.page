@@ -1,0 +1,58 @@
+<apex:page controller="ProdListclass" showHeader="false">
+    <apex:slds />
+    <apex:form >
+        <div class="slds-text-heading_medium
+                    slds-p-around_medium slds-border_bottom"><b>Product List</b></div>
+        <table class="slds-table slds-table_bordered" width="100%" >
+            <thead>
+                <tr>
+                    <th class="slds-text-title_caps" width="20%">
+                        <div title="IMAGE">IMAGE</div>
+                    </th>
+                    <th class="slds-text-title_caps" width="30%">
+                        <div title="TITLE">TITLE</div>
+                    </th>
+                    <th class="slds-text-title_caps" width="35%">
+                        <div title="DESCRIPTION">DISCRIPTION</div>
+                    </th>
+                    <th class="slds-text-title_caps" width="15%">
+                        <div title="COST">COST</div>
+                    </th>
+                </tr>
+            </thead> 
+            <tbody>
+                <apex:repeat value="{!prodTab}" var="pt">  
+                    <tr>
+                        <td width="20%">
+                            <div style="slds-text-align_center"><apex:image width="100px" height="100px" url="{!pt.Image_Url__c}"  />
+                                <apex:commandLink action="{!redirectToTitle}" value="{!pt.Name}">
+                                    <apex:param assignTo="{!itemId}" name="{!pt.Id}" value="{!pt.Id}"/>
+                                </apex:commandLink>
+                            </div>
+                        </td>
+                        <td class="slds-cell-wrap"  width="30%">
+                            <div><apex:outputField value="{!pt.Title__c}"/></div>
+                        </td>
+                        <td class="slds-cell-wrap" width="35%">
+                            <div>
+                                <apex:outputText value="{!LEFT(pt.Product_Description__c,100)}"/>
+                                <apex:outputText value="... " rendered="{!LEN(pt.Product_Description__c)>100}"/>
+                                <apex:outputLink value="ProdTitle?id={!pt.Id}" target="_self" rendered="{!LEN(pt.Product_Description__c)>100}">More</apex:outputLink>
+                            </div>
+                        </td>
+                        <td width="15%">
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_2-of-3 slds-text-align_left"><apex:outputField value="{!pt.Unit_Price__c}"/></div>
+                                <div class="slds-col slds-size_1-of-3">
+                                <apex:commandButton styleClass="slds-button slds-button_brand" action="{!redirectToShop}" value="Buy" reRender="Buy">
+                                    <apex:param assignTo="{!itemId}" name="itemId" value="{!pt.Id}"/>
+                                </apex:commandButton>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </apex:repeat>  
+            </tbody>
+        </table>
+    </apex:form>
+</apex:page>
