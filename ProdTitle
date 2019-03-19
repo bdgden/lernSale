@@ -1,0 +1,43 @@
+<apex:page controller="PrTitleclass" showHeader="false" showQuickActionVfHeader="false">
+    <apex:slds />
+    <apex:form >
+        <apex:repeat value="{!pt}" var="p">
+            <div class="slds-scope">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-1 slds-text-heading_large slds-align_absolute-center
+                                slds-p-around_large slds-border_bottom slds-theme_shade">
+                        <span><apex:outputText value="{!p.Name}"/></span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_medium slds-align_absolute-center">
+                        <span><apex:image width="600px" height="600px" url="{!p.Image_Url__c}" /></span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-vertical_x-large slds-p-right_medium">
+                        <span><ul class="slds-list_vertical-space-medium">
+                            <li class="slds-item">
+                                <div class="slds-text-title_caps" ><apex:outputText value="AMOUNT:"/></div>
+                                <div><apex:outputField value="{!p.Units_Ava__c}"/></div>
+                            </li>
+                            <li class="slds-item">
+                                <div class="slds-text-title_caps" ><apex:outputText value="TITLE:"/></div>
+                                <div><apex:outputField value="{!p.Title__c}"/></div>
+                            </li>
+                            <li class="slds-item">
+                                <div class="slds-text-title_caps" ><apex:outputText value="Description:"/></div>
+                                <div><apex:outputText value="{!p.Product_Description__c}"/></div>
+                            </li>
+                            </ul></span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-align_absolute-center slds-theme_shade
+                                slds-border_top slds-border_bottom slds-p-around_medium">
+                        <span><ul class="slds-button-group-row">
+                            <li class="slds-button-group-item"><apex:commandButton action="{!redirectToTitle}" value="To Shopping"/></li>
+                            <li class="slds-button-group-item">&nbsp;&nbsp;<apex:commandButton styleClass="slds-button slds-button_brand" action="{!redirectToShop}" value="Buy" reRender="Buy">
+                                <apex:param name="itemId" value="{!p.Id}" assignTo="{!itemId}"/>
+                                </apex:commandButton></li>
+                            </ul></span>
+                    </div>
+                </div>
+            </div>
+        </apex:repeat>
+    </apex:form>
+</apex:page>
