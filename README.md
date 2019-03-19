@@ -1,2 +1,0 @@
-# lernSale
-work
