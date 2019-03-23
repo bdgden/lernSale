@@ -34,19 +34,5 @@ public class ProductTableTriggerTest {
         System.assert(result.isSuccess());
         
     }
-    
-     @isTest public static void Tets200Products() {
-        
-		List<product_table__c> ptbList = new List<product_table__c>();
-		for (integer i=200; i<200; i++) {   
-  			Product_Table__c prodTab = new Product_Table__c (Name='Test'+i); 
-  			ptbList.add(prodTab);
-            system.debug(prodTab);   
-		}
-         
-        Test.startTest();
-        Database.insert(ptbList);
-        Test.stopTest();
-    }
     	
 }
