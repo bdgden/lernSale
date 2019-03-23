@@ -2,8 +2,6 @@ public class ProductTableTriggerHandler {
     
     public static Warehouse__c wh;
     
-    public static Integer days;
-    
     public static String query;
     
     public static Date qDate;
@@ -16,8 +14,8 @@ public class ProductTableTriggerHandler {
             
         }
         
-        Org_Configuration__c OrgConfig = [SELECT Period_Term__c FROM Org_Configuration__c];
-        days = OrgConfig.Period_Term__c.intValue();
+		Org_Configuration__c OrgConfig = Org_Configuration__c.getInstance();
+		integer days = OrgConfig.Period_Term__c.intValue();
         
         qdate = ProdTab.Added_Date__c;
         
