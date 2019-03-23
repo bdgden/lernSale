@@ -1,0 +1,38 @@
+@isTest
+public class ProductTableTriggerTest {
+    
+    @TestSetup
+    static void  setupTestData() {
+        Org_Configuration__c OrgConfig = new Org_Configuration__c(Period_Term__c=10);
+        insert OrgConfig;
+    }
+    
+    @isTest public static void Test1() {	
+        
+        Product_Table__c prodTab = new Product_Table__c(Name = 'Test Name', Added_Date__c = date.newInstance(2019, 03, 21));
+        
+        Test.startTest();
+        Database.SaveResult result = Database.insert(prodTab, true);
+        Test.stopTest();
+        System.assert(result.isSuccess());
+        
+    }
+    
+    @isTest public static void Test2() {
+        
+        Warehouse__c wh = new Warehouse__c (Name = 'Test Warehouse',
+                                            Period_Start__c = date.newInstance(2019, 03, 01),
+                                            Period_End__c = date.newInstance(2019, 03, 21));
+        insert wh;
+        
+        Product_Table__c prodTab = new Product_Table__c(Name = 'Test Name', Added_Date__c = date.newInstance(2019, 03, 21));
+        
+        Test.startTest();
+        Database.SaveResult result = Database.insert(prodTab, true);
+        Test.stopTest();
+        
+        System.assert(result.isSuccess());
+        
+    }
+    
+}
