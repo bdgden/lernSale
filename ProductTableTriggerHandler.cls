@@ -14,9 +14,8 @@ public class ProductTableTriggerHandler {
             
         }
         
-		Org_Configuration__c OrgConfig = Org_Configuration__c.getInstance();
-		integer days = OrgConfig.Period_Term__c.intValue();
-        
+	Org_Configuration__c OrgConfig = Org_Configuration__c.getInstance();
+	integer days = OrgConfig.Period_Term__c.intValue();
         qdate = ProdTab.Added_Date__c;
         
         query = 'SELECT Id FROM Warehouse__c WHERE Period_Start__c <= :qdate AND Period_End__c >= :qdate LIMIT 1';
