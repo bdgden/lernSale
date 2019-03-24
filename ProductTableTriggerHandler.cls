@@ -1,42 +1,44 @@
 public class ProductTableTriggerHandler {
     
-    public static Warehouse__c wh;
-    
-    public static String query;
-    
-    public static Date qDate;
-    
-    public static void handleBeforeInsert (Product_Table__c prodTab){
+    public static void handleBeforeInsert (List<Product_Table__c> ptList){
         
-        if (ProdTab.Added_Date__c == Null) {
+        Org_Configuration__c OrgConfig = Org_Configuration__c.getInstance();
+        
+        integer days = OrgConfig.Period_Term__c.intValue();
+        
+        Warehouse__c wh = new Warehouse__c();
+        
+        for (Product_Table__c ProdTab : ptList) {
             
-            ProdTab.Added_Date__c = Date.today();
+            if (ProdTab.Added_Date__c == Null) {
+                
+                ProdTab.Added_Date__c = Date.today();
+                
+            }
             
-        }
-        
-	Org_Configuration__c OrgConfig = Org_Configuration__c.getInstance();
-	integer days = OrgConfig.Period_Term__c.intValue();
-        qdate = ProdTab.Added_Date__c;
-        
-        query = 'SELECT Id FROM Warehouse__c WHERE Period_Start__c <= :qdate AND Period_End__c >= :qdate LIMIT 1';
-        
-        List<Warehouse__c> whList = Database.query(query);
-        
-        if (whList.isEmpty()) {
-       
-            wh = new Warehouse__c (Name = ('Warehouse ' + ProdTab.Added_Date__c + ' ' 
-                                           + qdate.addDays(days)),
-                                   Period_Start__c = qdate,
-                                   Period_End__c = qdate.addDays(days));
-            insert wh;
-            prodTab.Warehouse__c = wh.id;
+            Date qdate = ProdTab.Added_Date__c;
             
-        }
-        
-        else {
+            string query = 'SELECT Id FROM Warehouse__c WHERE Period_Start__c <= :qdate AND Period_End__c >= :qdate LIMIT 1';
             
-            wh = [SELECT id FROM Warehouse__c WHERE id =:whList];
-            prodTab.Warehouse__c = wh.id;
+            List<Warehouse__c> whList = Database.query(query);
+            
+            if (whList.isEmpty()) {
+                
+                wh.Name = ('Warehouse ' + ProdTab.Added_Date__c + ' ' + qdate.addDays(days));
+                wh.Period_Start__c = qdate;
+                wh.Period_End__c = qdate.addDays(days);
+                insert wh;
+                prodTab.Warehouse__c = wh.id;
+                
+            }
+            
+            else {
+
+                wh = whList.get(0);
+                prodTab.Warehouse__c = wh.id;
+                whList.clear();
+                
+            }
             
         }
         
